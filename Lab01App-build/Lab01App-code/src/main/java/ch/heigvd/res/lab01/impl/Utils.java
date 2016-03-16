@@ -1,6 +1,7 @@
 package ch.heigvd.res.lab01.impl;
 
 import java.util.logging.Logger;
+import java.util.*;
 
 /**
  *
@@ -20,7 +21,44 @@ public class Utils {
    * contain any line separator, then the first element is an empty string.
    */
   public static String[] getNextLine(String lines) {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    int index;
+    String result[] = new String[2];
+    
+    index = getIndexEndOfLine(lines);
+     
+    if (index!=-1)
+    {
+      result[0]= lines.substring(0,index+1);
+      result[1]=lines.substring(index+1);
+    } else
+    {      
+       result[0]="";
+       result[1]=lines;
+    }
+          
+    return result;
+   }
+  
+  //This function return the Index of the first end of line caractere.
+  //It work for Windows, Mac and Linux
+  public static int getIndexEndOfLine(String lines)
+  {
+    int index;
+    index = lines.indexOf("\r\n");  //For windows
+    if (index == -1)
+    {
+       index = lines.indexOf('\n');   //For unix
+    } else
+    {
+       index++;  //Because there is 2 characters
+    }
+    
+    if (index == -1)
+    {
+       index = lines.indexOf('\r');    //For MAC
+    }
+    
+    return index;
   }
 
 }

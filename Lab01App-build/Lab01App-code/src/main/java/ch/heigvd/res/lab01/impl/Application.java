@@ -9,8 +9,10 @@ import ch.heigvd.res.lab01.quotes.QuoteClient;
 import ch.heigvd.res.lab01.quotes.Quote;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.logging.Level;
@@ -92,10 +94,12 @@ public class Application implements IApplication {
        * one method provided by this class, which is responsible for storing the content of the
        * quote in a text file (and for generating the directories based on the tags).
        */
+      storeQuote(quote,"quote-"+i+".utf8");
       LOG.info("Received a new joke with " + quote.getTags().size() + " tags.");
       for (String tag : quote.getTags()) {
         LOG.info("> " + tag);
       }
+      
     }
   }
   
@@ -125,7 +129,22 @@ public class Application implements IApplication {
    * @throws IOException 
    */
   void storeQuote(Quote quote, String filename) throws IOException {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    String separator = File.separator; 
+    String filePath = WORKSPACE_DIRECTORY + separator;
+    
+    for (String tag : quote.getTags()) {
+        filePath += tag+separator;
+      }
+    
+    
+    File file = new File(filePath );
+    file.mkdirs();
+    filePath+=filename;
+    
+    Writer output = new OutputStreamWriter (new FileOutputStream(new File(filePath )),"UTF-8");
+    output.write(quote.getQuote());
+    output.flush();  // Vider le buffer   
+    output.close();
   }
   
   /**
@@ -142,13 +161,15 @@ public class Application implements IApplication {
          * of the the IFileVisitor interface inline. You just have to add the body of the visit method, which should
          * be pretty easy (we want to write the filename, including the path, to the writer passed in argument).
          */
+         try { writer.write(file.getPath() + '\n'); }
+         catch (IOException e) {}
       }
     });
   }
   
   @Override
   public String getAuthorEmail() {
-    throw new UnsupportedOperationException("The student has not implemented this method yet.");
+    return "raphael.henocq@heig-vd.ch";
   }
 
   @Override

@@ -58,6 +58,16 @@ public abstract class FileTransformer implements IFileVisitor {
        * writer has been decorated by the concrete subclass!). You need to write a loop to read the
        * characters and write them to the writer.
        */
+      System.out.println("PATH : " +file.getAbsolutePath());
+      int n;
+      int MAX_BUFF = 100;
+      char cbuf[] = new char[MAX_BUFF];
+      n = reader.read(cbuf,0,MAX_BUFF);
+      while (n!=-1)
+      {
+         writer.write(new String(cbuf),0,n);
+         n = reader.read(cbuf,0,MAX_BUFF);
+      }
       
       reader.close();
       writer.flush();
